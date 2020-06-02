@@ -1,38 +1,34 @@
 var express = require("express");
-var passport = require("passport")
-var keys = require('./config/keys')
-const GoogleStrategy = require("passport-google-oauth20").Strategy
+const mongoos = require ('mongoose');
+const cookieSession = require('cookie-session');
+const passport = require('passport')
+const keys = require('./config/keys');
+
+// It is important that we define the models before we use them, and a model is used in the service/passport.js file
+require('./models/User');
+require('./services/passport');
+
+
+mongoos.connect(keys.mongoURI)
+
 var app = express();
 
 
-// passport.use() - telling passport to be aware of a new strategy available
-// new GoogleStrategy() - Creates a new google passport stratety instance for passport to use. Config goes into the contructor ().
-passport.use(new GoogleStrategy({
-    clientID: keys.googleClientID,
-    clientSecret: keys.googleClientSecret,
-    callbackURL: "/auth/google/callback"
-    },
-    (accessToken, refreshToken, profile, done)=>{
-        console.log('access token: ', accessToken);
-        console.log('refresh token: ', refreshToken);
-        console.log('profile token: ', profile);
+app.use(
+    // below is a function and we are calling the function with an object with some settings
+    cookieSession({
+        // 30 days, 24 hours, 60 mins in hour, 60 secs in min, 1000 millisecs in second (total = 30 days)
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+        // this encrypts cookie, can use muliple keys for improved security
+        keys: [keys.cookieKey]
     })
-);
+)
 
+app.use(passport.initialize())
+app.use(passport.session())
 
-// - The GoogleStrategy() instance has some code in it which looks out for the 'google' string when using the passport.authenticate
-//      method below. Read docs for finding which string to use here for other auth providers (e.g. facebook)
-// - The passport.authenticate takes in the passport strategty we want to use, then a scope of the stuff that we want from that login
-//      e.g. the users profile and email. Check docs for available scope options
-app.get('/auth/google',
-    passport.authenticate('google', {
-        scope: ['profile', 'email']
-    })
-);
-
-app.get('/auth/google/callback',
-    passport.authenticate('google')
-);
+// The below require statement returns a function so we immediately call that function with the app object
+require('./routes/authRoutes')(app);
 
 const PORT = process.env.PORT || 8000
 app.listen(PORT);
