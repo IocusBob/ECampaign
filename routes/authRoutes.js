@@ -19,4 +19,10 @@ module.exports = (app) => {
     app.get('/api/current_user', (req, res) =>{
         res.send(req.user)
     });
+
+    app.get('/api/logout', (req, res)=>{
+        // .logout() is attached to the req object and it kills the users cookie, thus the user is "logged out".
+        req.logout();
+        res.send(req.user)
+    });
 };
