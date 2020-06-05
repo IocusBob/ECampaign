@@ -33,6 +33,9 @@ passport.use(new GoogleStrategy({
     clientID: keys.googleClientID,
     clientSecret: keys.googleClientSecret,
     callbackURL: "/auth/google/callback",
+    // The next line is for Heroku's proxy server, we need to tell google strategy that a proxy server will be there otherwise it
+    // gets suspicious about proxy servers and reverts the url to http, we heroku is using https. Google will see this mismatch
+    // and it will bugger up my APIs.
     proxy: true
     },
     (accessToken, refreshToken, profile, done)=>{ // ** 
