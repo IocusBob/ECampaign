@@ -13,8 +13,10 @@ module.exports = (app) => {
     );
 
     app.get('/auth/google/callback',
-        passport.authenticate('google')
-    );
+    passport.authenticate('google'),
+    (req, res) => {
+        res.redirect('/surveys')
+    });
 
     app.get('/api/current_user', (req, res) =>{
         res.send(req.user)
@@ -23,6 +25,6 @@ module.exports = (app) => {
     app.get('/api/logout', (req, res)=>{
         // .logout() is attached to the req object and it kills the users cookie, thus the user is "logged out".
         req.logout();
-        res.send(req.user)
+        res.redirect('/')
     });
 };
