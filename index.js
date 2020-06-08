@@ -1,5 +1,6 @@
 var express = require("express");
-const mongoos = require ('mongoose');
+const mongoose = require ('mongoose');
+const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
 const passport = require('passport')
 const keys = require('./config/keys');
@@ -9,10 +10,12 @@ require('./models/User');
 require('./services/passport');
 
 
-mongoos.connect(keys.mongoURI)
+
+mongoose.connect(keys.mongoURI)
 
 var app = express();
 
+app.use(bodyParser.json())
 
 app.use(
     // below is a function and we are calling the function with an object with some settings
@@ -29,6 +32,7 @@ app.use(passport.session())
 
 // The below require statement returns a function so we immediately call that function with the app object
 require('./routes/authRoutes')(app);
+require('./routes/billingRoutes')(app)
 
 const PORT = process.env.PORT || 8000
 app.listen(PORT);
