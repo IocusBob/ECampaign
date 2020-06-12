@@ -7,6 +7,7 @@ const keys = require('./config/keys');
 
 // It is important that we define the models before we use them, and a model is used in the service/passport.js file
 require('./models/User');
+require('./models/Survey');
 require('./services/passport');
 
 
