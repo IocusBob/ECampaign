@@ -38,6 +38,8 @@ passport.use(new GoogleStrategy({
     // and it will bugger up my APIs.
     proxy: true
     },
+    // The accessToken is basically the thing that allows us to change something inside someones Google account (like their contacts for example).
+    // We would need this accessToken when requesting changes
     async (accessToken, refreshToken, profile, done)=>{ // ** 
         const existingUser = await User.findOne({ googleId: profile.id })
             if (existingUser){
