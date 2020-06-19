@@ -1,4 +1,4 @@
-import RecipientSchema from './Recipient'
+const recipientSchema = require('./Recipient');
 
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
@@ -8,8 +8,8 @@ const surveySchema = new Schema({
     title: String,
     body: String,
     subject: String,
-    // [RecipientSchema] = array of recipient Schema objects
-    recipients: [RecipientSchema],
+    // [recipientSchema] = array of recipient Schema objects
+    recipients: [recipientSchema],
     yes: {type: Number, default: 0},
     no: {type: Number, default: 0},
     // _user is convention for showing relational fields. Schema.Types.ObjectId is just saying its a relational ID.
