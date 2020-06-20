@@ -33,7 +33,8 @@ app.use(passport.session())
 
 // The below require statement returns a function so we immediately call that function with the app object
 require('./routes/authRoutes')(app);
-require('./routes/billingRoutes')(app)
+require('./routes/billingRoutes')(app);
+require('./routes/surveyRoutes')(app);
 
 if(process.env.NODE_ENV === 'production'){
     // Express will serve up production assets like main.js or main.css files
