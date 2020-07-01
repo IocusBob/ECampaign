@@ -12,11 +12,12 @@ export const handleToken = (token) => async dispatch => {
     dispatch({type: FETCH_USER, payload: res.data})
 };
 
-export const submitSurvey = formValues => async dispatch => {
-    const res = await axios.post('/apis/surveys', formValues)
+export const submitSurvey = (formValues, history) => async dispatch => {
+    const res = await axios.post('/api/surveys', formValues)
+    history.push('/surveys')
     dispatch({type: FETCH_USER, payload: res.data})
+    
 }
-
 
 // export const fetchUser = () => {
 //     // We have redux-thunk middleware installed so that will clal the function inside of an action and pass in the dispatch argument
