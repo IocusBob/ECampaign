@@ -12,7 +12,10 @@ require('./services/passport');
 
 
 
-mongoose.connect(keys.mongoURI)
+mongoose.connect(keys.mongoURI, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+});
 
 var app = express();
 
